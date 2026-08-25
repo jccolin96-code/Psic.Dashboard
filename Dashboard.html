@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Psic. Isabel Daza - Sistema Clínico Integral</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom Animations Theme -->
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 font-sans antialiased text-slate-800">
+
+    <div class="flex h-screen overflow-hidden">
+        
+        <!-- Sidebar -->
+        <aside class="w-64 bg-gradient-to-b from-slate-950 to-slate-900 text-white hidden md:flex flex-col justify-between shadow-xl">
+            <div>
+                <!-- Logo Reemplazado -->
+                <div class="p-5 border-b border-slate-800 flex items-center justify-center bg-white/5">
+                    <img src="PSICID.png" alt="Psic. Isabel Daza" class="h-14 w-auto object-contain filter drop-shadow">
+                </div>
+                <nav class="mt-6 px-4 space-y-2">
+                    <button onclick="switchTab('dashboard')" id="btn-dashboard" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left bg-rose-600 text-white font-medium shadow-lg shadow-rose-950/40 transition-all duration-200">
+                        <i class="fa-solid fa-chart-pie w-5"></i> Dashboard
+                    </button>
+                    <button onclick="switchTab('pacientes')" id="btn-pacientes" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left text-slate-300 hover:bg-slate-800 hover:text-white transition-all duration-200">
+                        <i class="fa-solid fa-users w-5"></i> Registro de Pacientes
+                    </button>
+                    <button onclick="switchTab('citas')" id="btn-citas" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left text-slate-300 hover:bg-slate-800 hover:text-white transition-all duration-200">
+                        <i class="fa-solid fa-calendar-check w-5"></i> Citas Médicas
+                    </button>
+                    <button onclick="switchTab('historias')" id="btn-historias" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left text-slate-300 hover:bg-slate-800 hover:text-white transition-all duration-200">
+                        <i class="fa-solid fa-notes-medical w-5"></i> Historias Clínicas
+                    </button>
+                    <button onclick="switchTab('informes')" id="btn-informes" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left text-slate-300 hover:bg-slate-800 hover:text-white transition-all duration-200">
+                        <i class="fa-solid fa-file-medical w-5"></i> Informes Médicos
+                    </button>
+                </nav>
+            </div>
+            <div class="p-5 border-t border-slate-800 text-xs text-rose-300/70 text-center font-medium">
+                Psic. Isabel Daza &copy; 2026
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col overflow-y-auto">
+            
+            <!-- Top Navbar -->
+            <header class="bg-white/80 backdrop-blur-md sticky top-0 border-b border-slate-200 h-16 flex items-center justify-between px-8 z-10 shadow-sm">
+                <div class="flex items-center gap-4">
+                    <span class="text-xl font-bold text-slate-900 tracking-tight" id="current-title">Dashboard General</span>
+                </div>
+                <div class="flex items-center gap-4">
+                    <button onclick="switchTab('pacientes')" class="bg-rose-600 hover:bg-rose-700 text-white text-sm px-4 py-2.5 rounded-xl font-semibold transition-all duration-200 flex items-center gap-2 shadow-sm shadow-rose-600/20">
+                        <i class="fa-solid fa-user-plus"></i> Nuevo Paciente (Iniciar Flujo)
+                    </button>
+                    <div class="flex items-center gap-3 border-l pl-4 border-slate-200">
+                        <div class="bg-gradient-to-tr from-rose-600 to-slate-800 text-white rounded-xl h-10 w-10 flex items-center justify-center font-bold shadow-md shadow-rose-900/20">
+                            ID
+                        </div>
+                        <span class="text-sm font-semibold text-slate-700">Dra. Isabel Daza</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dynamic Views Container -->
+            <main class="p-8 space-y-6">
+
+                <!-- 1. DASHBOARD VIEW -->
+                <section id="view-dashboard" class="space-y-6 animate-fade-in">
+                    <!-- Metrics Cards -->
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80 hover:shadow-md transition-all duration-300 flex items-center justify-between group">
+                            <div>
+                                <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Total Pacientes</p>
+                                <h3 id="stat-pacientes" class="text-3xl font-black text-slate-900 mt-1">3</h3>
+                            </div>
+                            <div class="bg-rose-50 text-rose-600 p-4 rounded-2xl text-xl group-hover:scale-110 transition-transform duration-300">
+                                <i class="fa-solid fa-users"></i>
+                            </div>
+                        </div>
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80 hover:shadow-md transition-all duration-300 flex items-center justify-between group">
+                            <div>
+                                <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Citas Programadas</p>
+                                <h3 id="stat-citas" class="text-3xl font-black text-slate-900 mt-1">2</h3>
+                            </div>
+                            <div class="bg-emerald-50 text-emerald-600 p-4 rounded-2xl text-xl group-hover:scale-110 transition-transform duration-300">
+                                <i class="fa-solid fa-calendar-day"></i>
+                            </div>
+                        </div>
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80 hover:shadow-md transition-all duration-300 flex items-center justify-between group">
+                            <div>
+                                <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Historias Clínicas</p>
+                                <h3 id="stat-historias" class="text-3xl font-black text-slate-900 mt-1">2</h3>
+                            </div>
+                            <div class="bg-amber-50 text-amber-600 p-4 rounded-2xl text-xl group-hover:scale-110 transition-transform duration-300">
+                                <i class="fa-solid fa-notes-medical"></i>
+                            </div>
+                        </div>
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80 hover:shadow-md transition-all duration-300 flex items-center justify-between group">
+                            <div>
+                                <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Informes Emitidos</p>
+                                <h3 id="stat-informes" class="text-3xl font-black text-slate-900 mt-1">1</h3>
+                            </div>
+                            <div class="bg-purple-50 text-purple-600 p-4 rounded-2xl text-xl group-hover:scale-110 transition-transform duration-300">
+                                <i class="fa-solid fa-file-lines"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Welcome Flow Banner -->
+                    <div class="bg-gradient-to-r from-slate-950 via-slate-900 to-rose-950 rounded-2xl p-8 text-white shadow-xl flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden">
+                        <div class="absolute -right-10 -bottom-10 w-60 h-60 bg-rose-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                        <div class="relative z-10">
+                            <span class="bg-rose-500/20 text-rose-300 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider border border-rose-500/30">Sistema Activo</span>
+                            <h2 class="text-2xl font-extrabold mt-3">Flujo Clínico Automatizado</h2>
+                            <p class="text-slate-300 text-sm mt-1 max-w-xl">Registra un paciente para habilitar de manera fluida la asignación de citas, historial clínico e informes psicológicos.</p>
+                        </div>
+                        <button onclick="switchTab('pacientes')" class="relative z-10 bg-white text-slate-950 px-6 py-3 rounded-xl font-bold text-sm hover:bg-rose-50 transition-all duration-200 shadow-lg shadow-slate-950/50 hover:scale-105">
+                            Registrar Nuevo Paciente
+                        </button>
+                    </div>
+
+                    <!-- Grid of Tables in Dashboard -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <!-- Recent Activity Table: Pacientes -->
+                        <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6">
+                            <h3 class="text-base font-bold text-slate-900 mb-4 flex items-center gap-2">
+                                <i class="fa-solid fa-user-clock text-rose-600"></i> Pacientes Registrados Recientemente
+                            </h3>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left border-collapse">
+                                    <thead>
+                                        <tr class="border-b border-slate-100 text-slate-400 text-xs font-semibold uppercase tracking-wider">
+                                            <th class="py-3 px-3">DNI</th>
+                                            <th class="py-3 px-3">Nombre y Apellido</th>
+                                            <th class="py-3 px-3 text-right">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="dashboard-pacientes-list" class="text-sm divide-y divide-slate-100">
+                                        <!-- Inyectado por JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Recent Activity Table: Citas Programadas -->
+                        <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6">
+                            <h3 class="text-base font-bold text-slate-900 mb-4 flex items-center gap-2">
+                                <i class="fa-solid fa-calendar-check text-emerald-600"></i> Registro de Citas Programadas
+                            </h3>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left border-collapse">
+                                    <thead>
+                                        <tr class="border-b border-slate-100 text-slate-400 text-xs font-semibold uppercase tracking-wider">
+                                            <th class="py-3 px-3">Paciente</th>
+                                            <th class="py-3 px-3">Especialista</th>
+                                            <th class="py-3 px-3">Fecha/Hora</th>
+                                            <th class="py-3 px-3">Estado</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="dashboard-citas-list" class="text-sm divide-y divide-slate-100">
+                                        <!-- Inyectado por JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2. PACIENTES VIEW (REGISTRO) -->
+                <section id="view-pacientes" class="hidden space-y-6 animate-fade-in">
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-8 max-w-4xl mx-auto">
+                        <div class="flex justify-between items-center mb-6 border-b border-slate-100 pb-4">
+                            <div>
+                                <h2 class="text-xl font-extrabold text-slate-900">1. Registro de Paciente</h2>
+                                <p class="text-sm text-slate-500 mt-0.5">Paso inicial: Ingresa los datos del paciente para guardarlos en la base de datos.</p>
+                            </div>
+                            <span class="bg-rose-50 text-rose-700 border border-rose-200 text-xs px-3.5 py-1.5 rounded-xl font-bold">Paso 1 de 4</span>
+                        </div>
+                        
+                        <form id="form-paciente" onsubmit="registrarPaciente(event)" class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Nombre</label>
+                                <input type="text" id="p-nombre" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm focus:bg-white focus:ring-2 focus:ring-rose-500 focus:outline-none transition-all">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Apellido</label>
+                                <input type="text" id="p-apellido" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm focus:bg-white focus:ring-2 focus:ring-rose-500 focus:outline-none transition-all">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">DNI / Cédula</label>
+                                <input type="text" id="p-dni" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm focus:bg-white focus:ring-2 focus:ring-rose-500 focus:outline-none transition-all">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Fecha de Nacimiento</label>
+                                <input type="date" id="p-fnac" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm focus:bg-white focus:ring-2 focus:ring-rose-500 focus:outline-none transition-all">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Género</label>
+                                <select id="p-genero" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm focus:bg-white focus:ring-2 focus:ring-rose-500 focus:outline-none transition-all">
+                                    <option value="Masculino">Masculino</option>
+                                    <option value="Femenino">Femenino</option>
+                                    <option value="Otro">Otro</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Teléfono</label>
+                                <input type="text" id="p-tel" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm focus:bg-white focus:ring-2 focus:ring-rose-500 focus:outline-none transition-all">
+                            </div>
+                            <div class="md:col-span-2">
+                                <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Correo Electrónico</label>
+                                <input type="email" id="p-email" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm focus:bg-white focus:ring-2 focus:ring-rose-500 focus:outline-none transition-all">
+                            </div>
+                            <div class="md:col-span-2 flex justify-end mt-4">
+                                <button type="submit" class="bg-rose-600 hover:bg-rose-700 text-white px-7 py-3 rounded-xl text-sm font-bold transition-all duration-200 flex items-center gap-2 shadow-lg shadow-rose-600/20">
+                                    Guardar Paciente y Continuar <i class="fa-solid fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+
+                <!-- 3. CITAS VIEW -->
+                <section id="view-citas" class="hidden space-y-6 animate-fade-in">
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-8 max-w-4xl mx-auto">
+                        <div class="flex justify-between items-center mb-6 border-b border-slate-100 pb-4">
+                            <div>
+                                <h2 class="text-xl font-extrabold text-slate-900">2. Generar Cita Médica</h2>
+                                <p class="text-sm text-slate-500 mt-0.5">Asigna una fecha y especialista al paciente registrado.</p>
+                            </div>
+                            <span class="bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs px-3.5 py-1.5 rounded-xl font-bold">Paso 2 de 4</span>
+                        </div>
+
+                        <form id="form-cita" onsubmit="agendarCita(event)" class="space-y-5">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                <div>
+                                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Seleccionar Paciente</label>
+                                    <select id="c-paciente" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm focus:bg-white focus:ring-2 focus:ring-rose-500 focus:outline-none transition-all"></select>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Especialista Asignado</label>
+                                    <select id="c-medico" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm focus:bg-white focus:ring-2 focus:ring-rose-500 focus:outline-none transition-all">
+                                        <option value="Dra. Isabel Daza (Psicología Clínica)">Dra. Isabel Daza (Psicología Clínica)</option>
+                                        <option value="Lic. Andrea Morales (Psicoterapia)">Lic. Andrea Morales (Psicoterapia)</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Fecha y Hora</label>
+                                    <input type="datetime-local" id="c-fecha" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm focus:bg-white focus:ring-2 focus:ring-rose-500 focus:outline-none transition-all">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Motivo de Consulta</label>
+                                    <input type="text" id="c-motivo" placeholder="Ej: Ansiedad, Control terapéutico" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm focus:bg-white focus:ring-2 focus:ring-rose-500 focus:outline-none transition-all">
+                                </div>
+                            </div>
+                            <div class="flex justify-end gap-3 pt-4">
+                                <button type="button" onclick="switchTab('pacientes')" class="border border-slate-200 px-5 py-3 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-all">Regresar</button>
+                                <button type="submit" class="bg-rose-600 hover:bg-rose-700 text-white px-7 py-3 rounded-xl text-sm font-bold transition-all duration-200 flex items-center gap-2 shadow-lg shadow-rose-600/20">
+                                    Agendar Cita y Continuar <i class="fa-solid fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+
+                <!-- 4. HISTORIAS CLÍNICAS VIEW -->
+                <section id="view-historias" class="hidden space-y-6 animate-fade-in">
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-8 max-w-4xl mx-auto">
+                        <div class="flex justify-between items-center mb-6 border-b border-slate-100 pb-4">
+                            <div>
+                                <h2 class="text-xl font-extrabold text-slate-900">3. Registrar Historia Clínica</h2>
+                                <p class="text-sm text-slate-500 mt-0.5">Anota el diagnóstico, síntomas y tratamiento correspondiente de la sesión.</p>
+                            </div>
+                            <span class="bg-amber-50 text-amber-700 border border-amber-200 text-xs px-3.5 py-1.5 rounded-xl font-bold">Paso 3 de 4</span>
+                        </div>
+
+                        <form id="form-historia" onsubmit="registrarHistoria(event)" class="space-y-5">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                <div>
+                                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Paciente</label>
+                                    <select id="h-paciente" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm focus:bg-white focus:ring-2 focus:ring-rose-500 focus:outline-none transition-all"></select>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Especialista Tratante</label>
+                                    <input type="text" id="h-medico" value="Dra. Isabel Daza" class="w-full bg-slate-100 border border-slate-200 rounded-xl p-3 text-sm text-slate-500 cursor-not-allowed" readonly>
+                                </div>
+                                <div class="md:col-span-2">
+                                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Síntomas / Motivo Principal</label>
+                                    <textarea id="h-sintomas" rows="2" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm focus:bg-white focus:ring-2 focus:ring-rose-500 focus:outline-none transition-all" placeholder="Descripción de síntomas..."></textarea>
+                                </div>
+                                <div class="md:col-span-2">
+                                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Diagnóstico Psicológico</label>
+                                    <textarea id="h-diagnostico" rows="2" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm focus:bg-white focus:ring-2 focus:ring-rose-500 focus:outline-none transition-all" placeholder="Diagnóstico clínico..."></textarea>
+                                </div>
+                                <div class="md:col-span-2">
+                                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Plan Terapéutico e Indicaciones</label>
+                                    <textarea id="h-tratamiento" rows="2" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm focus:bg-white focus:ring-2 focus:ring-rose-500 focus:outline-none transition-all" placeholder="Estrategias y recomendaciones..."></textarea>
+                                </div>
+                            </div>
+                            <div class="flex justify-end gap-3 pt-4">
+                                <button type="button" onclick="switchTab('citas')" class="border border-slate-200 px-5 py-3 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-all">Regresar</button>
+                                <button type="submit" class="bg-rose-600 hover:bg-rose-700 text-white px-7 py-3 rounded-xl text-sm font-bold transition-all duration-200 flex items-center gap-2 shadow-lg shadow-rose-600/20">
+                                    Guardar Historia y Continuar <i class="fa-solid fa-arrow-right"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+
+                <!-- 5. INFORMES MÉDICOS VIEW -->
+                <section id="view-informes" class="hidden space-y-6 animate-fade-in">
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-8 max-w-4xl mx-auto">
+                        <div class="flex justify-between items-center mb-6 border-b border-slate-100 pb-4">
+                            <div>
+                                <h2 class="text-xl font-extrabold text-slate-900">4. Generar Informe Psicológico</h2>
+                                <p class="text-sm text-slate-500 mt-0.5">Construye el reporte clínico formal listo para ser impreso o entregado al paciente.</p>
+                            </div>
+                            <span class="bg-purple-50 text-purple-700 border border-purple-200 text-xs px-3.5 py-1.5 rounded-xl font-bold">Paso 4 de 4</span>
+                        </div>
+
+                        <form id="form-informe" onsubmit="generarInforme(event)" class="space-y-5">
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Seleccionar Paciente con Historia Clínica</label>
+                                <select id="i-paciente" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm focus:bg-white focus:ring-2 focus:ring-rose-500 focus:outline-none transition-all"></select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Contenido del Informe</label>
+                                <textarea id="i-contenido" rows="4" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm focus:bg-white focus:ring-2 focus:ring-rose-500 focus:outline-none transition-all" placeholder="Certifico que el paciente se encuentra bajo atención psicológica..."></textarea>
+                            </div>
+                            <div class="flex justify-end gap-3 pt-4">
+                                <button type="button" onclick="switchTab('historias')" class="border border-slate-200 px-5 py-3 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-all">Regresar</button>
+                                <button type="submit" class="bg-emerald-600 hover:bg-emerald-700 text-white px-7 py-3 rounded-xl text-sm font-bold transition-all duration-200 flex items-center gap-2 shadow-lg shadow-emerald-600/20">
+                                    <i class="fa-solid fa-file-arrow-down"></i> Finalizar y Generar Informe
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- Scripting and App Logic -->
+    <script>
+        // Base de Datos Simulada en Memoria (Refleja las tablas SQL)
+        let db = {
+            pacientes: [
+                { id: 1, nombre: "Carlos Pérez", dni: "V-25489632", tel: "0412-1234567", email: "carlos@email.com" },
+                { id: 2, nombre: "María Rodríguez", dni: "V-18965412", tel: "0414-9876543", email: "maria@email.com" },
+                { id: 3, nombre: "José Gómez", dni: "V-29874123", tel: "0416-4561230", email: "jose@email.com" }
+            ],
+            citas: [
+                { id: 1, paciente: "Carlos Pérez", medico: "Dra. Isabel Daza", fecha: "2026-08-26 09:00", estado: "Confirmada" },
+                { id: 2, paciente: "María Rodríguez", medico: "Lic. Andrea Morales", fecha: "2026-08-26 10:30", estado: "Pendiente" }
+            ],
+            historias: [
+                { id: 1, paciente: "Carlos Pérez", diagnostico: "Cuadro de estrés leve", tratamiento: "Técnicas de respiración y control" },
+                { id: 2, paciente: "María Rodríguez", diagnostico: "Agotamiento emocional", tratamiento: "Seguimiento psicoterapéutico quincenal" }
+            ],
+            informes: [
+                { id: 1, paciente: "Carlos Pérez", contenido: "Informe de evolución psicológica satisfactorio." }
+            ]
+        };
+
+        // Inicializar la interfaz al cargar
+        window.onload = function() {
+            actualizarSelects();
+            actualizarDashboard();
+        };
+
+        function switchTab(tabId) {
+            const sections = ['dashboard', 'pacientes', 'citas', 'historias', 'informes'];
+            sections.forEach(sec => {
+                document.getElementById(`view-${sec}`).classList.add('hidden');
+                document.getElementById(`btn-${sec}`).classList.remove('bg-rose-600', 'text-white', 'shadow-lg', 'shadow-rose-950/40', 'font-medium');
+                document.getElementById(`btn-${sec}`).classList.add('text-slate-300', 'hover:bg-slate-800', 'hover:text-white');
+            });
+
+            document.getElementById(`view-${tabId}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`btn-${tabId}`);
+            activeBtn.classList.remove('text-slate-300', 'hover:bg-slate-800', 'hover:text-white');
+            activeBtn.classList.add('bg-rose-600', 'text-white', 'shadow-lg', 'shadow-rose-950/40', 'font-medium');
+
+            const titles = {
+                'dashboard': 'Dashboard General',
+                'pacientes': 'Registro de Pacientes',
+                'citas': 'Agenda de Citas',
+                'historias': 'Historias Clínicas',
+                'informes': 'Informes Psicológicos'
+            };
+            document.getElementById('current-title').innerText = titles[tabId];
+        }
+
+        // Actualizar listas desplegables (Selects) con los pacientes registrados
+        function actualizarSelects() {
+            const selects = ['c-paciente', 'h-paciente', 'i-paciente'];
+            selects.forEach(selId => {
+                const selectElement = document.getElementById(selId);
+                selectElement.innerHTML = '';
+                db.pacientes.forEach(p => {
+                    let opt = document.createElement('option');
+                    opt.value = p.nombre;
+                    opt.innerText = `${p.nombre} (DNI: ${p.dni})`;
+                    selectElement.appendChild(opt);
+                });
+            });
+        }
+
+        // Actualizar métricas y tablas del Dashboard
+        function actualizarDashboard() {
+            document.getElementById('stat-pacientes').innerText = db.pacientes.length;
+            document.getElementById('stat-citas').innerText = db.citas.length;
+            document.getElementById('stat-historias').innerText = db.historias.length;
+            document.getElementById('stat-informes').innerText = db.informes.length;
+
+            // Tabla de Pacientes en Dashboard
+            let tbodyPacientes = document.getElementById('dashboard-pacientes-list');
+            tbodyPacientes.innerHTML = '';
+            db.pacientes.forEach(p => {
+                tbodyPacientes.innerHTML += `
+                    <tr class="hover:bg-slate-50 transition-colors">
+                        <td class="py-3 px-3 font-semibold text-slate-700">${p.dni}</td>
+                        <td class="py-3 px-3 text-slate-600">${p.nombre}</td>
+                        <td class="py-3 px-3 text-right">
+                            <button onclick="switchTab('citas')" class="text-rose-600 hover:text-rose-800 text-xs font-bold mr-2"><i class="fa-solid fa-calendar-plus"></i> Cita</button>
+                            <button onclick="switchTab('historias')" class="text-amber-600 hover:text-amber-800 text-xs font-bold"><i class="fa-solid fa-notes-medical"></i> Historia</button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            // Tabla de Citas en Dashboard
+            let tbodyCitas = document.getElementById('dashboard-citas-list');
+            tbodyCitas.innerHTML = '';
+            db.citas.forEach(c => {
+                tbodyCitas.innerHTML += `
+                    <tr class="hover:bg-slate-50 transition-colors">
+                        <td class="py-3 px-3 font-semibold text-slate-700">${c.paciente}</td>
+                        <td class="py-3 px-3 text-slate-600">${c.medico}</td>
+                        <td class="py-3 px-3 text-slate-600 text-xs">${c.fecha}</td>
+                        <td class="py-3 px-3"><span class="bg-emerald-50 text-emerald-700 border border-emerald-200 px-2.5 py-1 rounded-full text-xs font-bold">${c.estado}</span></td>
+                    </tr>
+                `;
+            });
+        }
+
+        // Lógica de Registro de Paciente (Paso 1 -> Redirige al Paso 2)
+        function registrarPaciente(event) {
+            event.preventDefault();
+            const nuevoP = {
+                id: db.pacientes.length + 1,
+                nombre: document.getElementById('p-nombre').value + ' ' + document.getElementById('p-apellido').value,
+                dni: document.getElementById('p-dni').value,
+                tel: document.getElementById('p-tel').value,
+                email: document.getElementById('p-email').value
+            };
+            db.pacientes.push(nuevoP);
+            actualizarSelects();
+            actualizarDashboard();
+            document.getElementById('form-paciente').reset();
+            alert('¡Paciente registrado con éxito! Pasando a agendar su cita.');
+            switchTab('citas');
+        }
+
+        // Lógica de Cita (Paso 2 -> Redirige al Paso 3)
+        function agendarCita(event) {
+            event.preventDefault();
+            const nuevaC = {
+                id: db.citas.length + 1,
+                paciente: document.getElementById('c-paciente').value,
+                medico: document.getElementById('c-medico').value,
+                fecha: document.getElementById('c-fecha').value,
+                estado: 'Pendiente'
+            };
+            db.citas.push(nuevaC);
+            actualizarDashboard();
+            document.getElementById('form-cita').reset();
+            alert('¡Cita agendada correctamente! Pasando a registrar su historia clínica.');
+            switchTab('historias');
+        }
+
+        // Lógica de Historia Clínica (Paso 3 -> Redirige al Paso 4)
+        function registrarHistoria(event) {
+            event.preventDefault();
+            const nuevaH = {
+                id: db.historias.length + 1,
+                paciente: document.getElementById('h-paciente').value,
+                diagnostico: document.getElementById('h-diagnostico').value,
+                tratamiento: document.getElementById('h-tratamiento').value
+            };
+            db.historias.push(nuevaH);
+            actualizarDashboard();
+            document.getElementById('form-historia').reset();
+            alert('¡Historia clínica guardada! Pasando a emitir el informe psicológico final.');
+            switchTab('informes');
+        }
+
+        // Lógica de Informe Médico (Paso 4 -> Cierra el flujo al Dashboard)
+        function generarInforme(event) {
+            event.preventDefault();
+            const nuevoI = {
+                id: db.informes.length + 1,
+                paciente: document.getElementById('i-paciente').value,
+                contenido: document.getElementById('i-contenido').value
+            };
+            db.informes.push(nuevoI);
+            actualizarDashboard();
+            document.getElementById('form-informe').reset();
+            alert('¡Informe generado exitosamente! Flujo completado.');
+            switchTab('dashboard');
+        }
+    </script>
+</body>
+</html>
