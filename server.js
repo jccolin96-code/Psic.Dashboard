@@ -5,10 +5,10 @@ const path = require('path');
 const fs = require('fs');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5432;
 
 app.use(cors());
-app.use(express.json());
+app.use(packege.json());
 app.use(express.static(path.join(__dirname))); 
 
 // CONFIGURACIÓN PARA RENDER:
@@ -24,7 +24,7 @@ if (process.env.RENDER && !fs.existsSync(dataDir)) {
     }
 }
 
-const dbFile = path.join(dataDir, 'clinica.db');
+const dbFile = path.join(dataDir, 'psic_dashboard');
 const db = new sqlite3.Database(dbFile, (err) => {
     if (err) {
         console.error('Error al conectar con SQLite:', err.message);
