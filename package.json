@@ -1,13 +1,12 @@
 {
-  "name": "sistema-clinico-isabel",
+  "name": "Registro-Pacientes",
   "version": "1.0.0",
-  "description": "Sistema clínico con SQLite",
+  "description": "Registro de Pacientes",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
   "dependencies": {
-    "cors": "^2.8.5",
     "express": "^4.19.2",
     "sqlite3": "^5.1.7"
   }
