@@ -1,5 +1,315 @@
-<script>
-        // Estado local temporal que se sincroniza con el servidor
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Clínico - Psic. Isabel Daza</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col">
+
+    <!-- Header / Navbar Principal -->
+    <header class="bg-slate-900 border-b border-slate-800 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center space-x-3">
+                    <div class="bg-rose-600 text-white p-2 rounded-xl shadow-lg shadow-rose-950/50">
+                        <i class="fa-solid fa-brain text-xl"></i>
+                    </div>
+                    <div>
+                        <span class="font-bold text-lg tracking-tight text-white block">Psic. Isabel Daza</span>
+                        <span class="text-xs text-slate-400 font-medium">Gestión Clínica Integral (SQLite)</span>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                        <span class="w-2 h-2 mr-2 bg-emerald-400 rounded-full animate-pulse"></span>
+                        Base de Datos Activa
+                    </span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Contenedor General -->
+    <div class="flex-1 flex flex-col md:flex-row max-w-7xl w-full mx-auto p-4 sm:p-6 gap-6">
+        
+        <!-- Barra Lateral de Navegación -->
+        <aside class="w-full md:w-64 bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-col justify-between shadow-xl">
+            <nav class="space-y-1.5">
+                <p class="px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Módulos</p>
+                
+                <button onclick="switchTab('dashboard')" id="btn-dashboard" class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium bg-rose-600 text-white shadow-lg shadow-rose-950/40 transition-all">
+                    <i class="fa-solid fa-chart-pie w-5"></i>
+                    <span>Dashboard</span>
+                </button>
+                
+                <button onclick="switchTab('pacientes')" id="btn-pacientes" class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white transition-all">
+                    <i class="fa-solid fa-user-plus w-5"></i>
+                    <span>Pacientes</span>
+                </button>
+
+                <button onclick="switchTab('citas')" id="btn-citas" class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white transition-all">
+                    <i class="fa-solid fa-calendar-check w-5"></i>
+                    <span>Citas</span>
+                </button>
+
+                <button onclick="switchTab('historias')" id="btn-historias" class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white transition-all">
+                    <i class="fa-solid fa-notes-medical w-5"></i>
+                    <span>Historias Clínicas</span>
+                </button>
+
+                <button onclick="switchTab('informes')" id="btn-informes" class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white transition-all">
+                    <i class="fa-solid fa-file-lines w-5"></i>
+                    <span>Informes Psicológicos</span>
+                </button>
+            </nav>
+
+            <div class="mt-6 pt-4 border-t border-slate-800 text-center">
+                <p class="text-xs text-slate-500">© 2026 - Consultorio Clínico</p>
+            </div>
+        </aside>
+
+        <!-- Área de Contenido Dinámico -->
+        <main class="flex-1 bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
+            
+            <div class="flex justify-between items-center mb-6 pb-4 border-b border-slate-800">
+                <h1 id="current-title" class="text-xl font-bold text-white tracking-tight">Dashboard General</h1>
+                <button onclick="cargarDatosServidor()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs px-3 py-2 rounded-lg font-semibold transition-all">
+                    <i class="fa-solid fa-rotate-right mr-1"></i> Sincronizar
+                </button>
+            </div>
+
+            <!-- VISTA: DASHBOARD -->
+            <section id="view-dashboard" class="space-y-6">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="bg-slate-950/50 border border-slate-800/80 p-5 rounded-2xl flex items-center justify-between">
+                        <div>
+                            <p class="text-xs font-semibold text-slate-400 uppercase">Pacientes</p>
+                            <h3 id="stat-pacientes" class="text-3xl font-bold text-white mt-1">0</h3>
+                        </div>
+                        <div class="bg-rose-500/10 text-rose-500 p-3 rounded-xl"><i class="fa-solid fa-users text-lg"></i></div>
+                    </div>
+                    <div class="bg-slate-950/50 border border-slate-800/80 p-5 rounded-2xl flex items-center justify-between">
+                        <div>
+                            <p class="text-xs font-semibold text-slate-400 uppercase">Citas Agendadas</p>
+                            <h3 id="stat-citas" class="text-3xl font-bold text-white mt-1">0</h3>
+                        </div>
+                        <div class="bg-indigo-500/10 text-indigo-400 p-3 rounded-xl"><i class="fa-solid fa-calendar text-lg"></i></div>
+                    </div>
+                    <div class="bg-slate-950/50 border border-slate-800/80 p-5 rounded-2xl flex items-center justify-between">
+                        <div>
+                            <p class="text-xs font-semibold text-slate-400 uppercase">Historias Clínicas</p>
+                            <h3 id="stat-historias" class="text-3xl font-bold text-white mt-1">0</h3>
+                        </div>
+                        <div class="bg-amber-500/10 text-amber-400 p-3 rounded-xl"><i class="fa-solid fa-file-medical text-lg"></i></div>
+                    </div>
+                    <div class="bg-slate-950/50 border border-slate-800/80 p-5 rounded-2xl flex items-center justify-between">
+                        <div>
+                            <p class="text-xs font-semibold text-slate-400 uppercase">Informes Emitidos</p>
+                            <h3 id="stat-informes" class="text-3xl font-bold text-white mt-1">0</h3>
+                        </div>
+                        <div class="bg-emerald-500/10 text-emerald-400 p-3 rounded-xl"><i class="fa-solid fa-file-shield text-lg"></i></div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-4">
+                    <div class="bg-slate-950/30 border border-slate-800 p-5 rounded-2xl">
+                        <h3 class="font-bold text-sm text-slate-300 mb-4">Últimos Pacientes Registrados</h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-sm">
+                                <tbody id="dashboard-pacientes-list">
+                                    <tr><td colspan="2" class="py-4 text-center text-slate-500 text-xs">Sin registros recientes</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="bg-slate-950/30 border border-slate-800 p-5 rounded-2xl">
+                        <h3 class="font-bold text-sm text-slate-300 mb-4">Próximas Citas</h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-sm">
+                                <tbody id="dashboard-citas-list">
+                                    <tr><td colspan="4" class="py-4 text-center text-slate-500 text-xs">Sin citas programadas</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VISTA: PACIENTES -->
+            <section id="view-pacientes" class="hidden space-y-6">
+                <form id="form-paciente" onsubmit="registrarPaciente(event)" class="bg-slate-950/40 border border-slate-800 p-5 rounded-2xl space-y-4">
+                    <h3 class="font-bold text-sm text-rose-500 uppercase tracking-wide">Nuevo Paciente</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-400 mb-1">Nombre</label>
+                            <input type="text" id="p-nombre" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-rose-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-400 mb-1">Apellido</label>
+                            <input type="text" id="p-apellido" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-rose-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-400 mb-1">Cédula / DNI</label>
+                            <input type="text" id="p-dni" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-rose-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-400 mb-1">Teléfono</label>
+                            <input type="text" id="p-tel" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-rose-500">
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label class="block text-xs font-semibold text-slate-400 mb-1">Correo Electrónico</label>
+                            <input type="email" id="p-email" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-rose-500">
+                        </div>
+                    </div>
+                    <button type="submit" class="bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs uppercase px-5 py-2.5 rounded-xl shadow-lg shadow-rose-950/50 transition-all">Guardar Paciente</button>
+                </form>
+
+                <div class="bg-slate-950/30 border border-slate-800 p-5 rounded-2xl">
+                    <h3 class="font-bold text-sm text-slate-300 mb-4">Listado de Pacientes Registrados</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm">
+                            <thead>
+                                <tr class="border-b border-slate-800 text-xs text-slate-400 uppercase">
+                                    <th class="py-3 px-3">DNI</th>
+                                    <th class="py-3 px-3">Nombre</th>
+                                    <th class="py-3 px-3">Teléfono</th>
+                                    <th class="py-3 px-3">Email</th>
+                                    <th class="py-3 px-3 text-right">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabla-gestion-pacientes"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VISTA: CITAS -->
+            <section id="view-citas" class="hidden space-y-6">
+                <form id="form-cita" onsubmit="agendarCita(event)" class="bg-slate-950/40 border border-slate-800 p-5 rounded-2xl space-y-4">
+                    <h3 class="font-bold text-sm text-rose-500 uppercase tracking-wide">Agendar Nueva Cita</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-400 mb-1">Seleccionar Paciente</label>
+                            <select id="c-paciente" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-rose-500"></select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-400 mb-1">Psicólogo / Especialista</label>
+                            <input type="text" id="c-medico" value="Psic. Isabel Daza" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-rose-500">
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label class="block text-xs font-semibold text-slate-400 mb-1">Fecha y Hora</label>
+                            <input type="datetime-local" id="c-fecha" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-rose-500">
+                        </div>
+                    </div>
+                    <button type="submit" class="bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs uppercase px-5 py-2.5 rounded-xl shadow-lg shadow-rose-950/50 transition-all">Agendar Cita</button>
+                </form>
+
+                <div class="bg-slate-950/30 border border-slate-800 p-5 rounded-2xl">
+                    <h3 class="font-bold text-sm text-slate-300 mb-4">Agenda de Citas</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm">
+                            <thead>
+                                <tr class="border-b border-slate-800 text-xs text-slate-400 uppercase">
+                                    <th class="py-3 px-3">Paciente</th>
+                                    <th class="py-3 px-3">Especialista</th>
+                                    <th class="py-3 px-3">Fecha</th>
+                                    <th class="py-3 px-3">Estado</th>
+                                    <th class="py-3 px-3 text-right">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabla-gestion-citas"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VISTA: HISTORIAS CLÍNICAS -->
+            <section id="view-historias" class="hidden space-y-6">
+                <form id="form-historia" onsubmit="registrarHistoria(event)" class="bg-slate-950/40 border border-slate-800 p-5 rounded-2xl space-y-4">
+                    <h3 class="font-bold text-sm text-rose-500 uppercase tracking-wide">Nueva Historia Clínica</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-400 mb-1">Paciente</label>
+                            <select id="h-paciente" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-rose-500"></select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-400 mb-1">Diagnóstico Psicológico</label>
+                            <textarea id="h-diagnostico" rows="3" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-rose-500"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-400 mb-1">Tratamiento e Indicaciones</label>
+                            <textarea id="h-tratamiento" rows="3" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-rose-500"></textarea>
+                        </div>
+                    </div>
+                    <button type="submit" class="bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs uppercase px-5 py-2.5 rounded-xl shadow-lg shadow-rose-950/50 transition-all">Guardar Historia</button>
+                </form>
+
+                <div class="bg-slate-950/30 border border-slate-800 p-5 rounded-2xl">
+                    <h3 class="font-bold text-sm text-slate-300 mb-4">Registro de Historias Clínicas</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm">
+                            <thead>
+                                <tr class="border-b border-slate-800 text-xs text-slate-400 uppercase">
+                                    <th class="py-3 px-3">Paciente</th>
+                                    <th class="py-3 px-3">Diagnóstico</th>
+                                    <th class="py-3 px-3">Tratamiento</th>
+                                    <th class="py-3 px-3 text-right">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabla-gestion-historias"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VISTA: INFORMES -->
+            <section id="view-informes" class="hidden space-y-6">
+                <form id="form-informe" onsubmit="generarInforme(event)" class="bg-slate-950/40 border border-slate-800 p-5 rounded-2xl space-y-4">
+                    <h3 class="font-bold text-sm text-rose-500 uppercase tracking-wide">Emitir Informe Psicológico</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-400 mb-1">Paciente</label>
+                            <select id="i-paciente" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-rose-500"></select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-400 mb-1">Contenido del Informe</label>
+                            <textarea id="i-contenido" rows="4" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-rose-500"></textarea>
+                        </div>
+                    </div>
+                    <button type="submit" class="bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs uppercase px-5 py-2.5 rounded-xl shadow-lg shadow-rose-950/50 transition-all">Generar Informe</button>
+                </form>
+
+                <div class="bg-slate-950/30 border border-slate-800 p-5 rounded-2xl">
+                    <h3 class="font-bold text-sm text-slate-300 mb-4">Informes Emitidos</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm">
+                            <thead>
+                                <tr class="border-b border-slate-800 text-xs text-slate-400 uppercase">
+                                    <th class="py-3 px-3">Paciente</th>
+                                    <th class="py-3 px-3">Contenido</th>
+                                    <th class="py-3 px-3 text-right">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabla-gestion-informes"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Script de Conexión a la Base de Datos SQLite (Render) -->
+    <script>
         let db = {
             pacientes: [],
             citas: [],
@@ -7,12 +317,10 @@
             informes: []
         };
 
-        // Cargar datos del servidor al iniciar la página
         window.onload = function() {
             cargarDatosServidor();
         };
 
-        // Obtener todos los registros desde el servidor SQLite
         async function cargarDatosServidor() {
             try {
                 const response = await fetch('/api/db');
@@ -22,7 +330,7 @@
                     actualizarDashboard();
                     actualizarTablasGestion();
                 } else {
-                    console.error('Error al cargar los datos del servidor');
+                    console.error('Error al sincronizar con el servidor');
                 }
             } catch (error) {
                 console.error('Error de red al conectar con el servidor:', error);
@@ -33,14 +341,13 @@
             const sections = ['dashboard', 'pacientes', 'citas', 'historias', 'informes'];
             sections.forEach(sec => {
                 document.getElementById(`view-${sec}`).classList.add('hidden');
-                document.getElementById(`btn-${sec}`).classList.remove('bg-rose-600', 'text-white', 'shadow-lg', 'shadow-rose-950/40', 'font-medium');
-                document.getElementById(`btn-${sec}`).classList.add('text-slate-300', 'hover:bg-slate-800', 'hover:text-white');
+                const btn = document.getElementById(`btn-${sec}`);
+                btn.className = 'w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white transition-all';
             });
 
             document.getElementById(`view-${tabId}`).classList.remove('hidden');
             const activeBtn = document.getElementById(`btn-${tabId}`);
-            activeBtn.classList.remove('text-slate-300', 'hover:bg-slate-800', 'hover:text-white');
-            activeBtn.classList.add('bg-rose-600', 'text-white', 'shadow-lg', 'shadow-rose-950/40', 'font-medium');
+            activeBtn.className = 'w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium bg-rose-600 text-white shadow-lg shadow-rose-950/40 transition-all';
 
             const titles = {
                 'dashboard': 'Dashboard General',
@@ -59,12 +366,18 @@
                 const el = document.getElementById(id);
                 if(el) {
                     el.innerHTML = '';
-                    db.pacientes.forEach(p => {
+                    if (db.pacientes.length === 0) {
                         let opt = document.createElement('option');
-                        opt.value = p.nombre;
-                        opt.textContent = `${p.nombre} (${p.dni})`;
+                        opt.textContent = 'No hay pacientes registrados';
                         el.appendChild(opt);
-                    });
+                    } else {
+                        db.pacientes.forEach(p => {
+                            let opt = document.createElement('option');
+                            opt.value = p.nombre;
+                            opt.textContent = `${p.nombre} (DNI: ${p.dni})`;
+                            el.appendChild(opt);
+                        });
+                    }
                 }
             });
         }
@@ -78,48 +391,54 @@
             let pList = document.getElementById('dashboard-pacientes-list');
             if(pList) {
                 pList.innerHTML = '';
-                db.pacientes.slice(-3).reverse().forEach(p => {
-                    pList.innerHTML += `
-                        <tr class="border-b border-slate-50">
-                            <td class="py-3 px-3 font-semibold text-slate-700">${p.dni}</td>
-                            <td class="py-3 px-3 text-slate-600">${p.nombre}</td>
-                            <td class="py-3 px-3 text-right">
-                                <button onclick="switchTab('pacientes')" class="text-rose-600 hover:text-rose-800 font-semibold text-xs">Ver</button>
-                            </td>
-                        </tr>
-                    `;
-                });
+                if(db.pacientes.length === 0) {
+                    pList.innerHTML = `<tr><td colspan="2" class="py-4 text-center text-slate-500 text-xs">Sin registros recientes</td></tr>`;
+                } else {
+                    db.pacientes.slice(-3).reverse().forEach(p => {
+                        pList.innerHTML += `
+                            <tr class="border-b border-slate-800/60">
+                                <td class="py-3 px-2 font-semibold text-slate-200">${p.nombre}</td>
+                                <td class="py-3 px-2 text-right">
+                                    <button onclick="switchTab('pacientes')" class="text-rose-500 hover:text-rose-400 font-semibold text-xs">Ver</button>
+                                </td>
+                            </tr>
+                        `;
+                    });
+                }
             }
 
             let cList = document.getElementById('dashboard-citas-list');
             if(cList) {
                 cList.innerHTML = '';
-                db.citas.slice(-3).reverse().forEach(c => {
-                    cList.innerHTML += `
-                        <tr class="border-b border-slate-50">
-                            <td class="py-3 px-3 font-semibold text-slate-700">${c.paciente}</td>
-                            <td class="py-3 px-3 text-slate-600">${c.medico}</td>
-                            <td class="py-3 px-3 text-slate-600 text-xs">${c.fecha}</td>
-                            <td class="py-3 px-3"><span class="bg-emerald-50 text-emerald-700 text-xs px-2.5 py-1 rounded-full font-bold">${c.estado}</span></td>
-                        </tr>
-                    `;
-                });
+                if(db.citas.length === 0) {
+                    cList.innerHTML = `<tr><td colspan="4" class="py-4 text-center text-slate-500 text-xs">Sin citas programadas</td></tr>`;
+                } else {
+                    db.citas.slice(-3).reverse().forEach(c => {
+                        cList.innerHTML += `
+                            <tr class="border-b border-slate-800/60">
+                                <td class="py-3 px-2 font-semibold text-slate-200">${c.paciente}</td>
+                                <td class="py-3 px-2 text-slate-400 text-xs">${c.fecha}</td>
+                                <td class="py-3 px-2 text-right"><span class="bg-emerald-500/10 text-emerald-400 text-xs px-2.5 py-1 rounded-full font-bold">${c.estado}</span></td>
+                            </tr>
+                        `;
+                    });
+                }
             }
         }
 
         function actualizarTablasGestion() {
             let tPacientes = document.getElementById('tabla-gestion-pacientes');
             if(tPacientes) {
-                tPacientes.innerHTML = '';
+                tPacientes.innerHTML = db.pacientes.length === 0 ? `<tr><td colspan="5" class="py-4 text-center text-slate-500 text-xs">No hay datos</td></tr>` : '';
                 db.pacientes.forEach((p) => {
                     tPacientes.innerHTML += `
-                        <tr class="border-b border-slate-100">
-                            <td class="py-3 px-3 font-semibold">${p.dni}</td>
-                            <td class="py-3 px-3">${p.nombre}</td>
-                            <td class="py-3 px-3">${p.tel}</td>
-                            <td class="py-3 px-3">${p.email}</td>
+                        <tr class="border-b border-slate-800/60">
+                            <td class="py-3 px-3 font-semibold text-slate-300">${p.dni}</td>
+                            <td class="py-3 px-3 text-slate-300">${p.nombre}</td>
+                            <td class="py-3 px-3 text-slate-400">${p.tel}</td>
+                            <td class="py-3 px-3 text-slate-400">${p.email}</td>
                             <td class="py-3 px-3 text-right">
-                                <button onclick="eliminarRegistro('pacientes', ${p.id})" class="bg-red-100 hover:bg-red-200 text-red-700 px-3 py-1.5 rounded-lg text-xs font-bold transition-all">
+                                <button onclick="eliminarRegistro('pacientes', ${p.id})" class="bg-red-500/10 hover:bg-red-500/20 text-red-400 px-3 py-1.5 rounded-lg text-xs font-bold transition-all">
                                     <i class="fa-solid fa-trash"></i> Eliminar
                                 </button>
                             </td>
@@ -130,16 +449,16 @@
 
             let tCitas = document.getElementById('tabla-gestion-citas');
             if(tCitas) {
-                tCitas.innerHTML = '';
+                tCitas.innerHTML = db.citas.length === 0 ? `<tr><td colspan="5" class="py-4 text-center text-slate-500 text-xs">No hay datos</td></tr>` : '';
                 db.citas.forEach((c) => {
                     tCitas.innerHTML += `
-                        <tr class="border-b border-slate-100">
-                            <td class="py-3 px-3 font-semibold">${c.paciente}</td>
-                            <td class="py-3 px-3">${c.medico}</td>
-                            <td class="py-3 px-3">${c.fecha}</td>
-                            <td class="py-3 px-3">${c.estado}</td>
+                        <tr class="border-b border-slate-800/60">
+                            <td class="py-3 px-3 font-semibold text-slate-300">${c.paciente}</td>
+                            <td class="py-3 px-3 text-slate-400">${c.medico}</td>
+                            <td class="py-3 px-3 text-slate-400">${c.fecha}</td>
+                            <td class="py-3 px-3 text-slate-300">${c.estado}</td>
                             <td class="py-3 px-3 text-right">
-                                <button onclick="eliminarRegistro('citas', ${c.id})" class="bg-red-100 hover:bg-red-200 text-red-700 px-3 py-1.5 rounded-lg text-xs font-bold transition-all">
+                                <button onclick="eliminarRegistro('citas', ${c.id})" class="bg-red-500/10 hover:bg-red-500/20 text-red-400 px-3 py-1.5 rounded-lg text-xs font-bold transition-all">
                                     <i class="fa-solid fa-trash"></i> Eliminar
                                 </button>
                             </td>
@@ -150,18 +469,18 @@
 
             let tHistorias = document.getElementById('tabla-gestion-historias');
             if(tHistorias) {
-                tHistorias.innerHTML = '';
+                tHistorias.innerHTML = db.historias.length === 0 ? `<tr><td colspan="4" class="py-4 text-center text-slate-500 text-xs">No hay datos</td></tr>` : '';
                 db.historias.forEach((h, index) => {
                     tHistorias.innerHTML += `
-                        <tr class="border-b border-slate-100">
-                            <td class="py-3 px-3 font-semibold">${h.paciente}</td>
-                            <td class="py-3 px-3">${h.diagnostico}</td>
-                            <td class="py-3 px-3">${h.tratamiento}</td>
+                        <tr class="border-b border-slate-800/60">
+                            <td class="py-3 px-3 font-semibold text-slate-300">${h.paciente}</td>
+                            <td class="py-3 px-3 text-slate-400">${h.diagnostico}</td>
+                            <td class="py-3 px-3 text-slate-400">${h.tratamiento}</td>
                             <td class="py-3 px-3 text-right space-x-1">
-                                <button onclick="generarPDFHistoria(${index})" class="bg-emerald-100 hover:bg-emerald-200 text-emerald-700 px-3 py-1.5 rounded-lg text-xs font-bold transition-all">
+                                <button onclick="generarPDFHistoria(${index})" class="bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 px-3 py-1.5 rounded-lg text-xs font-bold transition-all">
                                     <i class="fa-solid fa-file-pdf"></i> PDF
                                 </button>
-                                <button onclick="eliminarRegistro('historias', ${h.id})" class="bg-red-100 hover:bg-red-200 text-red-700 px-3 py-1.5 rounded-lg text-xs font-bold transition-all">
+                                <button onclick="eliminarRegistro('historias', ${h.id})" class="bg-red-500/10 hover:bg-red-500/20 text-red-400 px-3 py-1.5 rounded-lg text-xs font-bold transition-all">
                                     <i class="fa-solid fa-trash"></i> Eliminar
                                 </button>
                             </td>
@@ -172,14 +491,14 @@
 
             let tInformes = document.getElementById('tabla-gestion-informes');
             if(tInformes) {
-                tInformes.innerHTML = '';
+                tInformes.innerHTML = db.informes.length === 0 ? `<tr><td colspan="3" class="py-4 text-center text-slate-500 text-xs">No hay datos</td></tr>` : '';
                 db.informes.forEach((i) => {
                     tInformes.innerHTML += `
-                        <tr class="border-b border-slate-100">
-                            <td class="py-3 px-3 font-semibold">${i.paciente}</td>
-                            <td class="py-3 px-3">${i.contenido}</td>
+                        <tr class="border-b border-slate-800/60">
+                            <td class="py-3 px-3 font-semibold text-slate-300">${i.paciente}</td>
+                            <td class="py-3 px-3 text-slate-400">${i.contenido}</td>
                             <td class="py-3 px-3 text-right">
-                                <button onclick="eliminarRegistro('informes', ${i.id})" class="bg-red-100 hover:bg-red-200 text-red-700 px-3 py-1.5 rounded-lg text-xs font-bold transition-all">
+                                <button onclick="eliminarRegistro('informes', ${i.id})" class="bg-red-500/10 hover:bg-red-500/20 text-red-400 px-3 py-1.5 rounded-lg text-xs font-bold transition-all">
                                     <i class="fa-solid fa-trash"></i> Eliminar
                                 </button>
                             </td>
@@ -199,7 +518,7 @@
                     <meta charset="UTF-8">
                     <title>Historia Clínica - ${h.paciente}</title>
                     <style>
-                        body { font-family: system-ui, -apple-system, sans-serif; color: #1e293b; padding: 40px; margin: 0; background: #ffffff; }
+                        body { font-family: system-ui, sans-serif; color: #1e293b; padding: 40px; margin: 0; background: #ffffff; }
                         .contenedor { max-width: 42rem; margin: 0 auto; border: 1px solid #e2e8f0; padding: 32px; border-radius: 16px; }
                         .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; padding-bottom: 16px; margin-bottom: 24px; }
                         h1 { font-size: 1.25rem; font-weight: bold; margin: 0; color: #0f172a; }
@@ -211,11 +530,7 @@
                         .box { background: #f8fafc; padding: 12px 16px; border-radius: 12px; border: 1px solid #f1f5f9; color: #0f172a; font-size: 0.875rem; }
                         .footer { margin-top: 48px; padding-top: 24px; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; color: #94a3b8; }
                         .btn { background: #0f172a; color: white; border: none; padding: 8px 16px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.75rem; }
-                        @media print {
-                            .btn { display: none; }
-                            body { padding: 0; }
-                            .contenedor { border: none; }
-                        }
+                        @media print { .btn { display: none; } body { padding: 0; } .contenedor { border: none; } }
                     </style>
                 </head>
                 <body>
@@ -227,22 +542,13 @@
                             </div>
                             <div class="text-right">
                                 <p class="uppercase">Historia Clínica</p>
-                                <p>Fecha de emisión: ${new Date().toLocaleDateString()}</p>
+                                <p>Fecha: ${new Date().toLocaleDateString()}</p>
                             </div>
                         </div>
                         <div class="space-y">
-                            <div>
-                                <span class="label">Paciente:</span>
-                                <div class="box">${h.paciente}</div>
-                            </div>
-                            <div>
-                                <span class="label">Diagnóstico Psicológico:</span>
-                                <div class="box">${h.diagnostico}</div>
-                            </div>
-                            <div>
-                                <span class="label">Plan Terapéutico e Indicaciones:</span>
-                                <div class="box">${h.tratamiento}</div>
-                            </div>
+                            <div><span class="label">Paciente:</span><div class="box">${h.paciente}</div></div>
+                            <div><span class="label">Diagnóstico:</span><div class="box">${h.diagnostico}</div></div>
+                            <div><span class="label">Tratamiento:</span><div class="box">${h.tratamiento}</div></div>
                         </div>
                         <div class="footer">
                             <p>Documento generado digitalmente - Sistema Clínico</p>
@@ -255,21 +561,17 @@
             ventanaPDF.document.close();
         }
 
-        // Eliminar registro enviando petición DELETE al servidor
         async function eliminarRegistro(tabla, id) {
-            try {
-                const response = await fetch(`/api/${tabla}/${id}`, { method: 'DELETE' });
-                if (response.ok) {
-                    cargarDatosServidor();
-                } else {
-                    alert('No se pudo eliminar el registro');
+            if(confirm('¿Estás seguro de eliminar este registro?')) {
+                try {
+                    const response = await fetch(`/api/${tabla}/${id}`, { method: 'DELETE' });
+                    if (response.ok) cargarDatosServidor();
+                } catch (error) {
+                    console.error('Error al eliminar:', error);
                 }
-            } catch (error) {
-                console.error('Error al eliminar:', error);
             }
         }
 
-        // Funciones de registro conectadas por POST al servidor SQLite
         async function registrarPaciente(e) {
             e.preventDefault();
             let nuevoP = {
@@ -278,13 +580,11 @@
                 tel: document.getElementById('p-tel').value,
                 email: document.getElementById('p-email').value
             };
-
             await fetch('/api/pacientes', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(nuevoP)
             });
-
             document.getElementById('form-paciente').reset();
             await cargarDatosServidor();
             switchTab('citas');
@@ -298,13 +598,11 @@
                 fecha: document.getElementById('c-fecha').value.replace('T', ' '),
                 estado: 'Confirmada'
             };
-
             await fetch('/api/citas', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(nuevaC)
             });
-
             document.getElementById('form-cita').reset();
             await cargarDatosServidor();
             switchTab('historias');
@@ -317,13 +615,11 @@
                 diagnostico: document.getElementById('h-diagnostico').value,
                 tratamiento: document.getElementById('h-tratamiento').value
             };
-
             await fetch('/api/historias', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(nuevaH)
             });
-
             document.getElementById('form-historia').reset();
             await cargarDatosServidor();
             switchTab('informes');
@@ -335,16 +631,16 @@
                 paciente: document.getElementById('i-paciente').value,
                 contenido: document.getElementById('i-contenido').value
             };
-
             await fetch('/api/informes', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(nuevoI)
             });
-
             document.getElementById('form-informe').reset();
             await cargarDatosServidor();
             switchTab('dashboard');
-            alert('¡Informe psicológico generado y guardado en la base de datos con éxito!');
+            alert('¡Informe psicológico guardado en la base de datos con éxito!');
         }
     </script>
+</body>
+</html>
