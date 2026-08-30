@@ -26,7 +26,7 @@
         <!-- Sidebar -->
         <aside class="w-64 bg-gradient-to-b from-slate-950 to-slate-900 text-white hidden md:flex flex-col justify-between shadow-xl">
             <div>
-                <!-- Logo Reemplazado -->
+                <!-- Logo -->
                 <div class="p-5 border-b border-slate-800 flex items-center justify-center bg-white/5">
                     <img src="PSICID.png" alt="Psic. Isabel Daza" class="h-14 w-auto object-contain filter drop-shadow">
                 </div>
@@ -79,12 +79,12 @@
 
                 <!-- 1. DASHBOARD VIEW -->
                 <section id="view-dashboard" class="space-y-6 animate-fade-in">
-                    <!-- Metrics Cards (Actualizado con 5 tarjetas incluyendo Ingresos Totales) -->
+                    <!-- Metrics Cards -->
                     <div class="grid grid-cols-1 md:grid-cols-5 gap-6">
                         <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80 hover:shadow-md transition-all duration-300 flex items-center justify-between group">
                             <div>
                                 <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Total Pacientes</p>
-                                <h3 id="stat-pacientes" class="text-3xl font-black text-slate-900 mt-1">3</h3>
+                                <h3 id="stat-pacientes" class="text-3xl font-black text-slate-900 mt-1">0</h3>
                             </div>
                             <div class="bg-rose-50 text-rose-600 p-4 rounded-2xl text-xl group-hover:scale-110 transition-transform duration-300">
                                 <i class="fa-solid fa-users"></i>
@@ -93,7 +93,7 @@
                         <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80 hover:shadow-md transition-all duration-300 flex items-center justify-between group">
                             <div>
                                 <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Consultas Programadas</p>
-                                <h3 id="stat-consultas" class="text-3xl font-black text-slate-900 mt-1">2</h3>
+                                <h3 id="stat-consultas" class="text-3xl font-black text-slate-900 mt-1">0</h3>
                             </div>
                             <div class="bg-emerald-50 text-emerald-600 p-4 rounded-2xl text-xl group-hover:scale-110 transition-transform duration-300">
                                 <i class="fa-solid fa-calendar-day"></i>
@@ -102,7 +102,7 @@
                         <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80 hover:shadow-md transition-all duration-300 flex items-center justify-between group">
                             <div>
                                 <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Historias Clínicas</p>
-                                <h3 id="stat-historias" class="text-3xl font-black text-slate-900 mt-1">2</h3>
+                                <h3 id="stat-historias" class="text-3xl font-black text-slate-900 mt-1">0</h3>
                             </div>
                             <div class="bg-amber-50 text-amber-600 p-4 rounded-2xl text-xl group-hover:scale-110 transition-transform duration-300">
                                 <i class="fa-solid fa-notes-medical"></i>
@@ -111,7 +111,7 @@
                         <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80 hover:shadow-md transition-all duration-300 flex items-center justify-between group">
                             <div>
                                 <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Informes Emitidos</p>
-                                <h3 id="stat-informes" class="text-3xl font-black text-slate-900 mt-1">1</h3>
+                                <h3 id="stat-informes" class="text-3xl font-black text-slate-900 mt-1">0</h3>
                             </div>
                             <div class="bg-purple-50 text-purple-600 p-4 rounded-2xl text-xl group-hover:scale-110 transition-transform duration-300">
                                 <i class="fa-solid fa-file-lines"></i>
@@ -152,7 +152,7 @@
                                 <table class="w-full text-left border-collapse">
                                     <thead>
                                         <tr class="border-b border-slate-100 text-slate-400 text-xs font-semibold uppercase tracking-wider">
-                                            <th class="py-3 px-3">Cedula de Identidad</th>
+                                            <th class="py-3 px-3">Cédula de Identidad</th>
                                             <th class="py-3 px-3">Nombre y Apellido</th>
                                             <th class="py-3 px-3 text-right">Acciones</th>
                                         </tr>
@@ -210,7 +210,7 @@
                                 <input type="text" id="p-apellido" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm focus:bg-white focus:ring-2 focus:ring-rose-500 focus:outline-none transition-all">
                             </div>
                             <div>
-                                <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Cedula de Identidad</label>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Cédula de Identidad</label>
                                 <input type="text" id="p-dni" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm focus:bg-white focus:ring-2 focus:ring-rose-500 focus:outline-none transition-all">
                             </div>
                             <div>
@@ -238,7 +238,7 @@
                                 <input type="text" id="p-tel" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm focus:bg-white focus:ring-2 focus:ring-rose-500 focus:outline-none transition-all">
                             </div>
                             <div class="md:col-span-2">
-                                <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">telefono de emergrencia</label>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Teléfono de Emergencia</label>
                                 <input type="text" id="p-email" required class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm focus:bg-white focus:ring-2 focus:ring-rose-500 focus:outline-none transition-all">
                             </div>
                             <div class="md:col-span-2 flex justify-end mt-4">
@@ -249,14 +249,14 @@
                         </form>
                     </div>
 
-                    <!-- Tabla de gestión de pacientes con el botón de eliminar añadido -->
+                    <!-- Tabla de gestión de pacientes -->
                     <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-8 max-w-4xl mx-auto mt-6">
                         <h3 class="text-lg font-extrabold text-slate-900 mb-4">Lista General de Pacientes</h3>
                         <div class="overflow-x-auto">
                             <table class="w-full text-left border-collapse">
                                 <thead>
                                     <tr class="border-b border-slate-100 text-slate-400 text-xs font-semibold uppercase tracking-wider">
-                                        <th class="py-3 px-3">Cedula de Identidad</th>
+                                        <th class="py-3 px-3">Cédula de Identidad</th>
                                         <th class="py-3 px-3">Nombre</th>
                                         <th class="py-3 px-3">Edad</th>
                                         <th class="py-3 px-3">Ubicación</th>
@@ -293,8 +293,7 @@
                                 <div>
                                     <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Especialista Asignado</label>
                                     <select id="c-medico" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm focus:bg-white focus:ring-2 focus:ring-rose-500 focus:outline-none transition-all">
-                                        <option value="Dra. Isabel Daza (Psicología Clínica)">Dra. Isabel Daza (Psicología Clínica)</option>
-                                        <option value="Lic. Andrea Morales (Psicoterapia)">Lic. Andrea Morales (Psicoterapia)</option>
+                                        <option value="Dra. Isabel Daza">Dra. Isabel Daza</option>
                                     </select>
                                 </div>
                                 <div>
@@ -343,7 +342,7 @@
                         </div>
                     </div>
 
-                    <!-- Tabla de gestión de consultas con el botón de eliminar añadido -->
+                    <!-- Tabla de gestión de consultas -->
                     <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-8 max-w-4xl mx-auto mt-6">
                         <h3 class="text-lg font-extrabold text-slate-900 mb-4">Lista General de Consultas</h3>
                         <div class="overflow-x-auto">
@@ -410,7 +409,7 @@
                         </form>
                     </div>
 
-                    <!-- Tabla de gestión de historias con el botón de eliminar y PDF corregido/optimizado -->
+                    <!-- Tabla de gestión de historias -->
                     <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-8 max-w-4xl mx-auto mt-6">
                         <h3 class="text-lg font-extrabold text-slate-900 mb-4">Lista General de Historias</h3>
                         <div class="overflow-x-auto">
@@ -460,7 +459,7 @@
                         </form>
                     </div>
 
-                    <!-- Tabla de gestión de informes con el botón de eliminar y PDF añadido -->
+                    <!-- Tabla de gestión de informes -->
                     <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-8 max-w-4xl mx-auto mt-6">
                         <h3 class="text-lg font-extrabold text-slate-900 mb-4">Lista General de Informes</h3>
                         <div class="overflow-x-auto">
@@ -484,38 +483,43 @@
         </div>
     </div>
 
-    <!-- Scripting and App Logic -->
+    <!-- Scripting and App Logic Connected to Backend (server.js API endpoints) -->
     <script>
-        // Base de Datos Simulada en Memoria (Refleja las tablas SQL)
+        // Almacenamiento local en memoria sincronizado con el backend a través de fetch
         let db = {
-            pacientes: [
-                { id: 1, nombre: "Carlos Pérez", dni: "V-25489632", edad: 32, ubicacion: "Barquisimeto", tel: "0412-1234567", email: "0414-0000000" },
-                { id: 2, nombre: "María Rodríguez", dni: "V-18965412", edad: 28, ubicacion: "Cabudare", tel: "0414-9876543", email: "0416-1111111" },
-                { id: 3, nombre: "José Gómez", dni: "V-29874123", edad: 41, ubicacion: "Barquisimeto", tel: "0416-4561230", email: "0412-2222222" }
-            ],
-            consultas: [
-                { id: 1, paciente: "Carlos Pérez", medico: "Dra. Isabel Daza", fecha: "2026-08-26 09:00", modalidad: "Presencial", precio: 40, estado: "Confirmada" },
-                { id: 2, paciente: "María Rodríguez", medico: "Lic. Andrea Morales", fecha: "2026-08-26 10:30", modalidad: "Online", precio: 50, estado: "Pendiente" }
-            ],
-            historias: [
-                { id: 1, paciente: "Carlos Pérez", diagnostico: "Cuadro de estrés leve", tratamiento: "Técnicas de respiración y control" },
-                { id: 2, paciente: "María Rodríguez", diagnostico: "Agotamiento emocional", tratamiento: "Seguimiento psicoterapéutico quincenal" }
-            ],
-            informes: [
-                { id: 1, paciente: "Carlos Pérez", contenido: "Informe de evolution psicológica satisfactorio." }
-            ]
+            pacientes: [],
+            consultas: [],
+            historias: [],
+            informes: []
         };
 
-        // Variable global para controlar la vista del calendario
         let fechaActualCalendario = new Date();
 
-        // Inicializar la interfaz al cargar
-        window.onload = function() {
+        // Cargar datos del servidor al iniciar
+        window.onload = async function() {
+            await cargarDatosServidor();
             actualizarSelects();
             actualizarDashboard();
             actualizarTablasGestion();
             renderizarCalendario();
         };
+
+        async function cargarDatosServidor() {
+            try {
+                const [resP, resC, resH, resI] = await Promise.all([
+                    fetch('/api/pacientes'),
+                    fetch('/api/consultas'),
+                    fetch('/api/historias'),
+                    fetch('/api/informes')
+                ]);
+                db.pacientes = await resP.json();
+                db.consultas = await resC.json();
+                db.historias = await resH.json();
+                db.informes = await resI.json();
+            } catch (error) {
+                console.error("Error al conectar con el servidor:", error);
+            }
+        }
 
         function switchTab(tabId) {
             const sections = ['dashboard', 'pacientes', 'consultas', 'historias', 'informes'];
@@ -544,7 +548,6 @@
             }
         }
 
-        // Funciones auxiliares para actualizar UI y estadísticas
         function actualizarSelects() {
             const pSelects = ['c-paciente', 'h-paciente', 'i-paciente'];
             pSelects.forEach(id => {
@@ -567,11 +570,9 @@
             document.getElementById('stat-historias').innerText = db.historias.length;
             document.getElementById('stat-informes').innerText = db.informes.length;
 
-            // Cálculo dinámico de ingresos totales sumando los precios de las consultas
             let totalIngresos = db.consultas.reduce((acc, c) => acc + (parseFloat(c.precio) || 0), 0);
             document.getElementById('stat-ingresos').innerText = `$${totalIngresos.toFixed(2)}`;
 
-            // Listado dashboard pacientes
             let pList = document.getElementById('dashboard-pacientes-list');
             if(pList) {
                 pList.innerHTML = '';
@@ -588,7 +589,6 @@
                 });
             }
 
-            // Listado dashboard consultas
             let cList = document.getElementById('dashboard-consultas-list');
             if(cList) {
                 cList.innerHTML = '';
@@ -607,7 +607,6 @@
         }
 
         function actualizarTablasGestion() {
-            // Tabla Pacientes
             let tPacientes = document.getElementById('tabla-gestion-pacientes');
             if(tPacientes) {
                 tPacientes.innerHTML = '';
@@ -621,7 +620,7 @@
                             <td class="py-3 px-3">${p.tel}</td>
                             <td class="py-3 px-3 text-rose-600 font-semibold">${p.email}</td>
                             <td class="py-3 px-3 text-right">
-                                <button onclick="eliminarRegistro('pacientes', ${index})" class="bg-red-100 hover:bg-red-200 text-red-700 px-3 py-1.5 rounded-lg text-xs font-bold transition-all">
+                                <button onclick="eliminarRegistro('pacientes', ${p.id || index})" class="bg-red-100 hover:bg-red-200 text-red-700 px-3 py-1.5 rounded-lg text-xs font-bold transition-all">
                                     <i class="fa-solid fa-trash"></i> Eliminar
                                 </button>
                             </td>
@@ -630,7 +629,6 @@
                 });
             }
 
-            // Tabla Consultas
             let tConsultas = document.getElementById('tabla-gestion-consultas');
             if(tConsultas) {
                 tConsultas.innerHTML = '';
@@ -644,7 +642,7 @@
                             <td class="py-3 px-3 font-bold text-slate-700">$${(parseFloat(c.precio) || 0).toFixed(2)}</td>
                             <td class="py-3 px-3">${c.estado}</td>
                             <td class="py-3 px-3 text-right">
-                                <button onclick="eliminarRegistro('consultas', ${index})" class="bg-red-100 hover:bg-red-200 text-red-700 px-3 py-1.5 rounded-lg text-xs font-bold transition-all">
+                                <button onclick="eliminarRegistro('consultas', ${c.id || index})" class="bg-red-100 hover:bg-red-200 text-red-700 px-3 py-1.5 rounded-lg text-xs font-bold transition-all">
                                     <i class="fa-solid fa-trash"></i> Eliminar
                                 </button>
                             </td>
@@ -653,7 +651,6 @@
                 });
             }
 
-            // Tabla Historias (Con plantilla estructurada integrada para el PDF)
             let tHistorias = document.getElementById('tabla-gestion-historias');
             if(tHistorias) {
                 tHistorias.innerHTML = '';
@@ -667,7 +664,7 @@
                                 <button onclick="generarPDFHistoria(${index})" class="bg-emerald-100 hover:bg-emerald-200 text-emerald-700 px-3 py-1.5 rounded-lg text-xs font-bold transition-all">
                                     <i class="fa-solid fa-file-pdf"></i> PDF
                                 </button>
-                                <button onclick="eliminarRegistro('historias', ${index})" class="bg-red-100 hover:bg-red-200 text-red-700 px-3 py-1.5 rounded-lg text-xs font-bold transition-all">
+                                <button onclick="eliminarRegistro('historias', ${h.id || index})" class="bg-red-100 hover:bg-red-200 text-red-700 px-3 py-1.5 rounded-lg text-xs font-bold transition-all">
                                     <i class="fa-solid fa-trash"></i> Eliminar
                                 </button>
                             </td>
@@ -676,7 +673,6 @@
                 });
             }
 
-            // Tabla Informes (Con plantilla estructurada integrada para el PDF)
             let tInformes = document.getElementById('tabla-gestion-informes');
             if(tInformes) {
                 tInformes.innerHTML = '';
@@ -689,7 +685,7 @@
                                 <button onclick="generarPDFInforme(${index})" class="bg-emerald-100 hover:bg-emerald-200 text-emerald-700 px-3 py-1.5 rounded-lg text-xs font-bold transition-all">
                                     <i class="fa-solid fa-file-pdf"></i> PDF
                                 </button>
-                                <button onclick="eliminarRegistro('informes', ${index})" class="bg-red-100 hover:bg-red-200 text-red-700 px-3 py-1.5 rounded-lg text-xs font-bold transition-all">
+                                <button onclick="eliminarRegistro('informes', ${i.id || index})" class="bg-red-100 hover:bg-red-200 text-red-700 px-3 py-1.5 rounded-lg text-xs font-bold transition-all">
                                     <i class="fa-solid fa-trash"></i> Eliminar
                                 </button>
                             </td>
@@ -699,7 +695,6 @@
             }
         }
 
-        // Lógica del Calendario de Consultas
         function cambiarMes(direccion) {
             fechaActualCalendario.setMonth(fechaActualCalendario.getMonth() + direccion);
             renderizarCalendario();
@@ -718,15 +713,12 @@
             const nombresMeses = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
             label.innerText = `${nombresMeses[mes]} ${año}`;
 
-            // Primer día del mes y total de días
             let primerDiaIndex = new Date(año, mes, 1).getDay();
-            // Ajustar para que la semana empiece en lunes (0 = Lunes, 6 = Domingo)
             primerDiaIndex = (primerDiaIndex === 0) ? 6 : primerDiaIndex - 1;
             
             const totalDiasMes = new Date(año, mes + 1, 0).getDate();
             const totalDiasMesAnterior = new Date(año, mes, 0).getDate();
 
-            // Rellenar días del mes anterior
             for (let i = primerDiaIndex - 1; i >= 0; i--) {
                 const diaDiv = document.createElement('div');
                 diaDiv.className = 'h-24 bg-slate-50/50 rounded-xl p-1.5 text-slate-300 text-xs border border-transparent flex flex-col justify-between';
@@ -734,7 +726,6 @@
                 grid.appendChild(diaDiv);
             }
 
-            // Rellenar días del mes actual
             for (let dia = 1; dia <= totalDiasMes; dia++) {
                 const diaStr = String(dia).padStart(2, '0');
                 const mesStr = String(mes + 1).padStart(2, '0');
@@ -745,8 +736,7 @@
                 
                 let contenidoDia = `<span class="font-bold text-slate-900">${dia}</span>`;
                 
-                // Buscar consultas en esta fecha
-                const consultasDelDia = db.consultas.filter(c => c.fecha.startsWith(fechaYMD));
+                const consultasDelDia = db.consultas.filter(c => c.fecha && c.fecha.startsWith(fechaYMD));
                 if (consultasDelDia.length > 0) {
                     diaDiv.classList.add('bg-rose-50/30', 'border-rose-200');
                     let badges = '<div class="space-y-1 mt-1">';
@@ -761,7 +751,6 @@
                 grid.appendChild(diaDiv);
             }
 
-            // Rellenar días del siguiente mes para completar la cuadrícula (hasta 35 o 42 celdas)
             const celdasTotalesRenderizadas = primerDiaIndex + totalDiasMes;
             const celdasFaltantes = (celdasTotalesRenderizadas <= 35) ? 35 - celdasTotalesRenderizadas : 42 - celdasTotalesRenderizadas;
             for (let i = 1; i <= celdasFaltantes; i++) {
@@ -772,7 +761,6 @@
             }
         }
 
-        // Función integrada con la estructura solicitada para generar el reporte/PDF de historia clínica
         function generarPDFHistoria(index) {
             const h = db.historias[index];
             const pacienteObj = db.pacientes.find(p => p.nombre === h.paciente) || {};
@@ -811,8 +799,8 @@
                     <div class="contenedor">
                         <div class="header">
                             <div>
-                                <h1>lcda Isabel Daza</h1>
-                                <p>Psicologa</p>
+                                <h1>Dra. Isabel Daza</h1>
+                                <p>Psicología Clínica</p>
                             </div>
                             <div class="text-right">
                                 <p class="uppercase">Reporte Clínico Oficial</p>
@@ -821,22 +809,22 @@
                             </div>
                         </div>
 
-                        <div class="section-title"> Datos de Identificación del Paciente</div>
+                        <div class="section-title">Datos de Identificación del Paciente</div>
                         <div class="box grid-2">
                             <div><strong>Nombre y Apellido:</strong> ${h.paciente}</div>
-                            <div><strong>Cedula de Identidad:</strong> ${pacienteObj.dni || 'N/A'}</div>
+                            <div><strong>Cédula de Identidad:</strong> ${pacienteObj.dni || 'N/A'}</div>
                             <div><strong>Edad:</strong> ${pacienteObj.edad ? pacienteObj.edad + ' años' : 'N/A'}</div>
                             <div><strong>Ubicación:</strong> ${pacienteObj.ubicacion || 'N/A'}</div>
                             <div><strong>Teléfono de Contacto:</strong> ${pacienteObj.tel || 'N/A'}</div>
                             <div><strong>Nro. de Emergencia:</strong> ${pacienteObj.email || 'N/A'}</div>
                         </div>
 
-                        <div class="section-title"> Motivo de Consulta</div>
+                        <div class="section-title">Motivo de Consulta</div>
                         <div class="box">
-                            Paciente acude a consulta para evaluación y seguimiento clínico en el área de psicología/salud general.
+                            Paciente acude a consulta para evaluación y seguimiento clínico en el área de psicología.
                         </div>
 
-                        <div class="section-title"> Evaluación y Diagnóstico</div>
+                        <div class="section-title">Evaluación y Diagnóstico</div>
                         <div class="box" style="margin-bottom: 8px;">
                             <strong>Impresión Diagnóstica:</strong> ${h.diagnostico}
                         </div>
@@ -844,7 +832,7 @@
                             <strong>Observaciones Clínicas:</strong> Se evidencia seguimiento activo del tratamiento y evolución del cuadro clínico.
                         </div>
 
-                        <div class="section-title"> Plan de Tratamiento y Recomendaciones</div>
+                        <div class="section-title">Plan de Tratamiento y Recomendaciones</div>
                         <div class="box" style="margin-bottom: 8px;">
                             <strong>Estrategia Terapéutica / Tratamiento:</strong> ${h.tratamiento}
                         </div>
@@ -852,7 +840,7 @@
                             <strong>Recomendaciones:</strong> Mantener constancia en las sesiones pautadas y control periódico.
                         </div>
 
-                        <div class="section-title"> Consultas y Próximos Controles</div>
+                        <div class="section-title">Consultas y Próximos Controles</div>
                         <div class="box grid-2">
                             <div><strong>Especialista Asignado:</strong> Dra. Isabel Daza</div>
                             <div><strong>Estado Actual:</strong> ${consultaObj.estado || 'Activo'}</div>
@@ -860,7 +848,7 @@
                         </div>
 
                         <div class="footer">
-                            <p>Documento generado digitalmente por el Registro de Pacientes - Psic. Isabel Daza</p>
+                            <p>Documento generado digitalmente por el Sistema - Dra. Isabel Daza</p>
                             <button class="btn" onclick="window.print()">Imprimir / Guardar PDF</button>
                         </div>
                     </div>
@@ -870,13 +858,11 @@
             ventanaPDF.document.close();
         }
 
-        // Función integrada para generar el reporte/PDF de informe médico/psicológico (Actualizada con conteo de consultas y resumen de avances)
         function generarPDFInforme(index) {
             const i = db.informes[index];
             const pacienteObj = db.pacientes.find(p => p.nombre === i.paciente) || {};
             const historiaObj = db.historias.find(h => h.paciente === i.paciente) || {};
             
-            // Calcular cuantas consultas tiene registradas este paciente
             const consultasPaciente = db.consultas.filter(c => c.paciente === i.paciente);
             const totalConsultas = consultasPaciente.length;
 
@@ -914,8 +900,8 @@
                     <div class="contenedor">
                         <div class="header">
                             <div>
-                                <h1>Lcda. Isabel Daza</h1>
-                                <p>Psicologa</p>
+                                <h1>Dra. Isabel Daza</h1>
+                                <p>Psicología Clínica</p>
                             </div>
                             <div class="text-right">
                                 <p class="uppercase">Informe Psicológico</p>
@@ -924,17 +910,17 @@
                             </div>
                         </div>
 
-                        <div class="section-title"> Datos de Identificación</div>
+                        <div class="section-title">Datos de Identificación</div>
                         <div class="box grid-2">
                             <div><strong>Nombre y Apellido:</strong> ${i.paciente}</div>
-                            <div><strong>Cedula de Identidad:</strong> ${pacienteObj.dni || 'N/A'}</div>
+                            <div><strong>Cédula de Identidad:</strong> ${pacienteObj.dni || 'N/A'}</div>
                             <div><strong>Edad:</strong> ${pacienteObj.edad ? pacienteObj.edad + ' años' : 'N/A'}</div>
                             <div><strong>Ubicación:</strong> ${pacienteObj.ubicacion || 'N/A'}</div>
                             <div><strong>Teléfono:</strong> ${pacienteObj.tel || 'N/A'}</div>
                             <div><strong>Nro. de Emergencia:</strong> ${pacienteObj.email || 'N/A'}</div>
                         </div>
 
-                        <div class="section-title"> Resumen de Consultas y Avances</div>
+                        <div class="section-title">Resumen de Consultas y Avances</div>
                         <div class="box grid-2" style="margin-bottom: 8px;">
                             <div><strong>Total de Consultas Realizadas:</strong> ${totalConsultas} sesión(es)</div>
                             <div><strong>Estado del Proceso:</strong> En seguimiento terapéutico</div>
@@ -943,18 +929,18 @@
                             <strong>Avances Observados:</strong> ${historiaObj.tratamiento ? 'Se registra aplicación de: ' + historiaObj.tratamiento + '.' : 'Paciente muestra receptividad y progreso favorable en las sesiones impartidas.'}
                         </div>
 
-                        <div class="section-title"> Contenido del Informe / Dictamen</div>
+                        <div class="section-title">Contenido del Informe / Dictamen</div>
                         <div class="box">
                             ${i.contenido}
                         </div>
 
-                        <div class="section-title"> Conclusión y Validación</div>
+                        <div class="section-title">Conclusión y Validación</div>
                         <div class="box">
                             Se expide el presente informe a petición de la parte interesada en Barquisimeto, a los ${fechaHoy}.
                         </div>
 
                         <div class="footer">
-                            <p>Documento generado digitalmente por el Registro de Pacientes - Psic. Isabel Daza</p>
+                            <p>Documento generado digitalmente por el Sistema - Dra. Isabel Daza</p>
                             <button class="btn" onclick="window.print()">Imprimir / Guardar PDF</button>
                         </div>
                     </div>
@@ -964,20 +950,22 @@
             ventanaPDF.document.close();
         }
 
-        // Función para eliminar registros
-        function eliminarRegistro(tipo, index) {
-            db[tipo].splice(index, 1);
-            actualizarSelects();
-            actualizarDashboard();
-            actualizarTablasGestion();
-            renderizarCalendario();
+        async function eliminarRegistro(tipo, id) {
+            try {
+                await fetch(`/api/${tipo}/${id}`, { method: 'DELETE' });
+                await cargarDatosServidor();
+                actualizarSelects();
+                actualizarDashboard();
+                actualizarTablasGestion();
+                renderizarCalendario();
+            } catch (error) {
+                console.error("Error al eliminar:", error);
+            }
         }
 
-        // Funciones de formularios de simulación de flujo
-        function registrarPaciente(e) {
+        async function registrarPaciente(e) {
             e.preventDefault();
             let nuevoP = {
-                id: db.pacientes.length + 1,
                 nombre: document.getElementById('p-nombre').value + ' ' + document.getElementById('p-apellido').value,
                 dni: document.getElementById('p-dni').value,
                 edad: document.getElementById('p-edad').value,
@@ -985,18 +973,27 @@
                 tel: document.getElementById('p-tel').value,
                 email: document.getElementById('p-email').value
             };
-            db.pacientes.push(nuevoP);
-            actualizarSelects();
-            actualizarDashboard();
-            actualizarTablasGestion();
-            document.getElementById('form-paciente').reset();
-            switchTab('consultas');
+
+            try {
+                await fetch('/api/pacientes', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(nuevoP)
+                });
+                await cargarDatosServidor();
+                actualizarSelects();
+                actualizarDashboard();
+                actualizarTablasGestion();
+                document.getElementById('form-paciente').reset();
+                switchTab('consultas');
+            } catch (error) {
+                console.error("Error al registrar paciente:", error);
+            }
         }
 
-        function agendarConsulta(e) {
+        async function agendarConsulta(e) {
             e.preventDefault();
             let nuevaC = {
-                id: db.consultas.length + 1,
                 paciente: document.getElementById('c-paciente').value,
                 medico: document.getElementById('c-medico').value,
                 fecha: document.getElementById('c-fecha').value.replace('T', ' '),
@@ -1004,42 +1001,70 @@
                 precio: parseFloat(document.getElementById('c-precio').value) || 0,
                 estado: 'Confirmada'
             };
-            db.consultas.push(nuevaC);
-            actualizarDashboard();
-            actualizarTablasGestion();
-            renderizarCalendario();
-            document.getElementById('form-consulta').reset();
-            switchTab('historias');
+
+            try {
+                await fetch('/api/consultas', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(nuevaC)
+                });
+                await cargarDatosServidor();
+                actualizarDashboard();
+                actualizarTablasGestion();
+                renderizarCalendario();
+                document.getElementById('form-consulta').reset();
+                switchTab('historias');
+            } catch (error) {
+                console.error("Error al agendar consulta:", error);
+            }
         }
 
-        function registrarHistoria(e) {
+        async function registrarHistoria(e) {
             e.preventDefault();
             let nuevaH = {
-                id: db.historias.length + 1,
                 paciente: document.getElementById('h-paciente').value,
                 diagnostico: document.getElementById('h-diagnostico').value,
                 tratamiento: document.getElementById('h-tratamiento').value
             };
-            db.historias.push(nuevaH);
-            actualizarDashboard();
-            actualizarTablasGestion();
-            document.getElementById('form-historia').reset();
-            switchTab('informes');
+
+            try {
+                await fetch('/api/historias', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(nuevaH)
+                });
+                await cargarDatosServidor();
+                actualizarDashboard();
+                actualizarTablasGestion();
+                document.getElementById('form-historia').reset();
+                switchTab('informes');
+            } catch (error) {
+                console.error("Error al registrar historia:", error);
+            }
         }
 
-        function generarInforme(e) {
+        async function generarInforme(e) {
             e.preventDefault();
             let nuevoI = {
-                id: db.informes.length + 1,
                 paciente: document.getElementById('i-paciente').value,
                 contenido: document.getElementById('i-contenido').value
             };
-            db.informes.push(nuevoI);
-            actualizarDashboard();
-            actualizarTablasGestion();
-            document.getElementById('form-informe').reset();
-            switchTab('dashboard');
-            alert('¡Informe psicológico generado con éxito!');
+
+            try {
+                await fetch('/api/informes', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(nuevoI)
+                });
+                await cargarDatosServidor();
+                actualizarDashboard();
+                actualizarTablasGestion();
+                document.getElementById('form-informe').reset();
+                switchTab('dashboard');
+                alert('¡Informe psicológico generado con éxito!');
+            } catch (error) {
+                console.error("Error al generar informe:", error);
+            }
         }
     </script>
 </body>
