@@ -2,21 +2,34 @@ const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
 const cors = require('cors');
 const path = require('path');
+const fs = require('fs');
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
-app.use(express.static(path.join(__dirname))); // Para servir tu HTML
+app.use(express.static(path.join(__dirname))); 
 
-// Conexión y creación de la Base de Datos SQLite
-const dbFile = path.join(__dirname, 'clinica.db');
+// CONFIGURACIÓN PARA RENDER:
+// Si usas un Disco Persistente en Render, por lo general se monta en una ruta como '/data'.
+// Verificamos si existe esa carpeta; si no, guardamos la BD localmente (para cuando pruebes en tu PC).
+const dataDir = process.env.RENDER ? '/data' : __dirname;
+
+if (process.env.RENDER && !fs.existsSync(dataDir)) {
+    try {
+        fs.mkdirSync(dataDir, { recursive: true });
+    } catch (err) {
+        console.log("No se pudo crear la carpeta /data, usando directorio local.");
+    }
+}
+
+const dbFile = path.join(dataDir, 'clinica.db');
 const db = new sqlite3.Database(dbFile, (err) => {
     if (err) {
         console.error('Error al conectar con SQLite:', err.message);
     } else {
-        console.log('Conectado a la base de datos SQLite (clinica.db)');
+        console.log(`Conectado a la base de datos en: ${dbFile}`);
     }
 });
 
@@ -54,7 +67,6 @@ db.serialize(() => {
 
 // --- API ENDPOINTS ---
 
-// Obtener todos los datos
 app.get('/api/db', (req, res) => {
     db.all("SELECT * FROM pacientes", [], (err, pacientes) => {
         db.all("SELECT * FROM citas", [], (err, citas) => {
@@ -67,7 +79,6 @@ app.get('/api/db', (req, res) => {
     });
 });
 
-// Registrar Paciente
 app.post('/api/pacientes', (req, res) => {
     const { nombre, dni, tel, email } = req.body;
     db.run(`INSERT INTO pacientes (nombre, dni, tel, email) VALUES (?, ?, ?, ?)`, [nombre, dni, tel, email], function(err) {
@@ -76,7 +87,6 @@ app.post('/api/pacientes', (req, res) => {
     });
 });
 
-// Registrar Cita
 app.post('/api/citas', (req, res) => {
     const { paciente, medico, fecha, estado } = req.body;
     db.run(`INSERT INTO citas (paciente, medico, fecha, estado) VALUES (?, ?, ?, ?)`, [paciente, medico, fecha, estado], function(err) {
@@ -85,7 +95,6 @@ app.post('/api/citas', (req, res) => {
     });
 });
 
-// Registrar Historia
 app.post('/api/historias', (req, res) => {
     const { paciente, diagnostico, tratamiento } = req.body;
     db.run(`INSERT INTO historias (paciente, diagnostico, tratamiento) VALUES (?, ?, ?)`, [paciente, diagnostico, tratamiento], function(err) {
@@ -94,7 +103,6 @@ app.post('/api/historias', (req, res) => {
     });
 });
 
-// Registrar Informe
 app.post('/api/informes', (req, res) => {
     const { paciente, contenido } = req.body;
     db.run(`INSERT INTO informes (paciente, contenido) VALUES (?, ?)`, [paciente, contenido], function(err) {
@@ -103,10 +111,8 @@ app.post('/api/informes', (req, res) => {
     });
 });
 
-// Eliminar Registro Genérico
 app.delete('/api/:tabla/:id', (req, res) => {
     const { tabla, id } = req.params;
-    // Validar tablas permitidas por seguridad
     if (!['pacientes', 'citas', 'historias', 'informes'].includes(tabla)) {
         return res.status(400).json({ error: 'Tabla no válida' });
     }
@@ -117,5 +123,5 @@ app.delete('/api/:tabla/:id', (req, res) => {
 });
 
 app.listen(PORT, () => {
-    console.log(`Servidor corriendo en http://localhost:${PORT}`);
+    console.log(`Servidor corriendo en puerto ${PORT}`);
 });
