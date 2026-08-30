@@ -1,6 +1,7 @@
 const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
+const fs = require('fs');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -12,11 +13,22 @@ app.use(express.urlencoded({ extended: true }));
 // Servir archivos estáticos desde la carpeta actual
 app.use(express.static(path.join(__dirname)));
 
-// Configuración de la base de datos SQLite adaptada para Render con disco persistente
-const dbPath = process.env.RENDER_DISK_PATH 
-    ? path.join(process.env.RENDER_DISK_PATH, 'database.sqlite')
-    : path.resolve(__dirname, 'database.sqlite');
+// Asegurar que el directorio del disco persistente exista en Render si está configurado
+let dbPath = path.resolve(__dirname, 'database.sqlite');
+if (process.env.RENDER_DISK_PATH) {
+    const dir = process.env.RENDER_DISK_PATH;
+    if (!fs.existsSync(dir)) {
+        try {
+            fs.mkdirSync(dir, { recursive: true });
+            console.log(`Directorio creado para el disco persistente: ${dir}`);
+        } catch (err) {
+            console.error(`Error creando el directorio ${dir}:`, err);
+        }
+    }
+    dbPath = path.join(dir, 'database.sqlite');
+}
 
+// Conexión a SQLite
 const db = new sqlite3.Database(dbPath, (err) => {
     if (err) {
         console.error('Error al conectar con la base de datos SQLite:', err.message);
@@ -25,7 +37,7 @@ const db = new sqlite3.Database(dbPath, (err) => {
     }
 });
 
-// Inicialización de tablas basadas en el sistema clínico
+// Inicialización de tablas
 db.serialize(() => {
     db.run(`CREATE TABLE IF NOT EXISTS patients (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -65,34 +77,58 @@ db.serialize(() => {
     )`);
 });
 
-// ==================== RUTAS DE LA API ====================
+// ==================== RUTAS DE LA API CON LOGS DE DEPURACIÓN ====================
 
 // --- PACIENTES ---
 app.get('/api/patients', (req, res) => {
     db.all(`SELECT * FROM patients ORDER BY created_at DESC`, [], (err, rows) => {
-        if (err) return res.status(500).json({ error: err.message });
+        if (err) {
+            console.error('Error GET /api/patients:', err.message);
+            return res.status(500).json({ error: err.message });
+        }
         res.json({ patients: rows });
     });
 });
 
 app.post('/api/patients', (req, res) => {
-    const { name, dni, edad, ubicacion, tel, email } = req.body;
-    if (!name) return res.status(400).json({ error: 'El nombre es obligatorio.' });
+    console.log('Datos recibidos en POST /api/patients:', req.body);
+    // Permitimos flexibilidad por si el front envía nombres alternativos (ej: telefono o fullname)
+    const name = req.body.name || req.body.nombre || req.body.fullname;
+    const dni = req.body.dni || req.body.cedula;
+    const edad = req.body.edad;
+    const ubicacion = req.body.ubicacion || req.body.address;
+    const tel = req.body.tel || req.body.telefono;
+    const email = req.body.email;
+
+    if (!name) {
+        return res.status(400).json({ error: 'El nombre es obligatorio.' });
+    }
 
     const query = `INSERT INTO patients (name, dni, edad, ubicacion, tel, email) VALUES (?, ?, ?, ?, ?, ?)`;
     db.run(query, [name, dni, edad, ubicacion, tel, email], function(err) {
-        if (err) return res.status(500).json({ error: err.message });
+        if (err) {
+            console.error('Error al insertar paciente:', err.message);
+            return res.status(500).json({ error: err.message });
+        }
         res.json({ message: 'Paciente registrado exitosamente.', id: this.lastID });
     });
 });
 
 app.put('/api/patients/:id', (req, res) => {
     const { id } = req.params;
-    const { name, dni, edad, ubicacion, tel, email } = req.body;
+    const name = req.body.name || req.body.nombre;
+    const dni = req.body.dni;
+    const edad = req.body.edad;
+    const ubicacion = req.body.ubicacion;
+    const tel = req.body.tel || req.body.telefono;
+    const email = req.body.email;
     
     const query = `UPDATE patients SET name = ?, dni = ?, edad = ?, ubicacion = ?, tel = ?, email = ? WHERE id = ?`;
     db.run(query, [name, dni, edad, ubicacion, tel, email, id], function(err) {
-        if (err) return res.status(500).json({ error: err.message });
+        if (err) {
+            console.error('Error al actualizar paciente:', err.message);
+            return res.status(500).json({ error: err.message });
+        }
         if (this.changes === 0) return res.status(404).json({ error: 'Paciente no encontrado.' });
         res.json({ message: 'Paciente actualizado exitosamente.' });
     });
@@ -100,9 +136,17 @@ app.put('/api/patients/:id', (req, res) => {
 
 app.delete('/api/patients/:id', (req, res) => {
     const { id } = req.params;
+    console.log(`Intentando eliminar paciente con ID: ${id}`);
     db.run(`DELETE FROM patients WHERE id = ?`, [id], function(err) {
-        if (err) return res.status(500).json({ error: err.message });
-        if (this.changes === 0) return res.status(404).json({ error: 'Paciente no encontrado.' });
+        if (err) {
+            console.error('Error al eliminar paciente:', err.message);
+            return res.status(500).json({ error: err.message });
+        }
+        if (this.changes === 0) {
+            console.warn(`Intento de eliminar paciente ID ${id} pero no existe.`);
+            return res.status(404).json({ error: 'Paciente no encontrado.' });
+        }
+        console.log(`Paciente ID ${id} eliminado correctamente.`);
         res.json({ message: 'Paciente eliminado exitosamente.' });
     });
 });
@@ -203,12 +247,12 @@ app.delete('/api/reports/:id', (req, res) => {
     });
 });
 
-// Ruta de diagnóstico / Health Check
+// Health check
 app.get('/api/health', (req, res) => {
     res.json({ status: 'OK', uptime: process.uptime(), timestamp: new Date() });
 });
 
-// Redirección SPA para el Frontend
+// SPA fallback
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
