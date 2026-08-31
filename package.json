@@ -1,12 +1,13 @@
 {
-  "name": "mi-proyecto-html",
+  "name": "sistema-clinico-isabel-daza",
   "version": "1.0.0",
-  "description": "Servidor para HTML estático",
+  "description": "Sistema clínico con Node, Express y SQLite",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
   "dependencies": {
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "sqlite3": "^5.1.7"
   }
 }
